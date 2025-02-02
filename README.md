@@ -2,6 +2,46 @@
 
 This repository contains my Hyprland dotfiles for Arch Linux, stored in a bare Git repository.
 
+## **Restoring Dotfiles & Installed Packages on a New System**
+
+### **1️⃣ Restore Dotfiles**
+Clone your dotfiles repository:
+```bash
+git clone --bare https://github.com/yourusername/dotfiles.git $HOME/.dotfiles
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+dotfiles checkout
+```
+
+If you get errors about existing files, move them:
+```bash
+mkdir -p ~/.dotfiles-backup-existing
+rsync --recursive --verbose --backup --suffix=.bak $HOME/.config ~/.dotfiles-backup-existing/
+dotfiles checkout
+```
+
+---
+
+### **2️⃣ Restore Installed Packages**
+
+#### **Restore `pacman` Packages**
+```bash
+sudo pacman -S --needed - < ~/.dotfiles-backup/pacman-packages.txt
+```
+
+#### **Restore `yay` Packages**
+First, install `yay` if not installed:
+```bash
+sudo pacman -S --needed yay
+```
+Then restore all AUR packages:
+```bash
+yay -S --needed - < ~/.dotfiles-backup/yay-packages.txt
+```
+
+Now, your system is restored with all your configurations and packages! 🚀
+
+
+
 ## 🚀 Restoring Dotfiles on a New System
 
 Follow these steps to restore your dotfiles on a fresh system.
